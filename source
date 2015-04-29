@@ -177,6 +177,9 @@ function __call()
 		else if( !isset($this->enums[$name]) && (count($arguments) > 0) ){
 			$this->enums[$name] = $arguments[0];
 			}
+		else if( !isset($this->enums[$name]) && (count($arguments) < 1) ){
+			$this->enums[$name] = count($this->enums) - 1;
+			}
 
 	return false;
 }
