@@ -61,4 +61,36 @@ After it has been defined.
 Update:
 
 The __call() function now has been updated to allow you to now use the enum name as a function and the class
-will now use that to put or get informatino from the enum array.
+will now use that to put or get informatino from the enum array.  So instead of doing:
+
+   $c->put( "a", 0 );
+
+You could do:
+
+   $c->a(0);
+
+This would cause the __call() function to be called (because there isn't an "a" function and be passed:
+
+   __call(<NAME>, <ARGUMENTS>);
+
+or
+   ___call( "a", 0 );
+
+This, in turn, is interpreted as:
+
+   $this->enums[$name] = $arguments[0];
+
+or
+   $this->enums["a"] = 0;
+
+All subsequent calls to the "a" function just return the value.  Thus maintaining the constant value already
+given before.  Like so:
+
+   $c->a();
+
+Would return zero(0).
+
+Care should be taken because using the __call() function will NOT return an error if the wrong enum
+name is sent to the function.  Instead, this will just create a new enum set to the count of enums
+minus one (# - 1).  (This is done so the numbers go from zero(0) to whatever rather than starting at
+one(1).
