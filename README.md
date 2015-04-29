@@ -57,3 +57,8 @@ return an enum.  Just call it as a function.  So the RED_LIGHT enum could be cal
 After it has been defined.
 
 6. __destruct().  The function used to shut the class down.
+
+Update:
+
+The __call() function now has been updated to allow you to now use the enum name as a function and the class
+will now use that to put or get informatino from the enum array.
