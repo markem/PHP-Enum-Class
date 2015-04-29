@@ -1,6 +1,6 @@
 <?php
 ################################################################################
-#	Class ENUM
+#	Class ENUMS
 #
 #		Original code by Mark Manning.
 #		Copyrighted (c) 2015 by Mark Manning.
@@ -26,10 +26,11 @@
 #		VIM formatting.  Set tabs to four(4) spaces.
 #
 ################################################################################
-class enum
+class enums
 {
 	private $enums;
 	private $clear_flag;
+	private $last_value;
 
 ################################################################################
 #	__construct(). Construction function.  Optionally pass in your enums.
@@ -38,6 +39,7 @@ function __construct()
 {
 	$this->enums = array();
 	$this->clear_flag = false;
+	$this->last_value = 0;
 
 	if( func_num_args() > 0 ){
 		return $this->put( func_get_args() );
@@ -71,12 +73,13 @@ function put()
 #	change that to be "A"=>#. Where "#" is the current count of the enums.
 #
 				if( is_numeric($k) ){
-					$this->enums[$v] = count( $this->enums ) - 1;
+					$this->enums[$v] = $this->last_value++;
 					}
 #
 #	Else - they sent "a"=>"A", "b"=>"B", "c"=>"C"...
 #
 					else {
+						$this->last_value = $v + 1;
 						$this->enums[$k] = $v;
 						}
 				}
@@ -95,7 +98,7 @@ function put()
 #	Again - remove the IF statement if you want to be able to change the enums.
 #
 				if( !isset($this->enums[$args[0]]) ){
-					$this->enums[$args[0]] = count($this->enums) - 1;
+					$this->enums[$args[0]] = $this->last_value++;
 					}
 #
 #	No - they sent us a regular enum
@@ -106,6 +109,7 @@ function put()
 #	Again - remove the IF statement if you want to be able to change the enums.
 #
 						if( !isset($this->enums[$args[0]]) ){
+							$this->last_value = $args[1] + 1;
 							$this->enums[$args[0]] = $args[1];
 							}
 						}
@@ -119,7 +123,7 @@ function put()
 ################################################################################
 function get()
 {
-	$num  func_num_args();
+	$num = func_num_args();
 	$args = func_get_args();
 #
 #	Is this an array of enums request? (ie: $c->get(array("a","b","c"...)) )
@@ -171,14 +175,15 @@ function clear()
 ################################################################################
 #	__call().  In case someone tries to blow up the class.
 ################################################################################
-function __call()
+function __call( $name, $arguments )
 {
 	if( isset($this->enums[$name]) ){ return $this->enums[$name]; }
 		else if( !isset($this->enums[$name]) && (count($arguments) > 0) ){
+			$this->last_value = $arguments[0] + 1;
 			$this->enums[$name] = $arguments[0];
 			}
 		else if( !isset($this->enums[$name]) && (count($arguments) < 1) ){
-			$this->enums[$name] = count($this->enums) - 1;
+			$this->enums[$name] = $this->last_value++;
 			}
 
 	return false;
@@ -195,4 +200,16 @@ function __destruct()
 }
 
 }
+
+#	Test code
+#
+#	$c = new enums();
+#	$c->RED_LIGHT(5);
+#	$c->YELLOW_LIGHT();
+#	$c->GREEN_LIGHT();
+#
+#	echo $c->RED_LIGHT() . "\n";
+#	echo $c->YELLOW_LIGHT() . "\n";
+#	echo $c->GREEN_LIGHT() . "\n";
+
 ?>
