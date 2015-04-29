@@ -181,9 +181,42 @@ function __call( $name, $arguments )
 		else if( !isset($this->enums[$name]) && (count($arguments) > 0) ){
 			$this->last_value = $arguments[0] + 1;
 			$this->enums[$name] = $arguments[0];
+			return true;
 			}
 		else if( !isset($this->enums[$name]) && (count($arguments) < 1) ){
 			$this->enums[$name] = $this->last_value++;
+			return true;
+			}
+
+	return false;
+}
+################################################################################
+#	__get(). Gets the value.
+################################################################################
+function __get($name)
+{
+	if( isset($this->enums[$name]) ){ return $this->enums[$name]; }
+		else if( !isset($this->enums[$name]) ){
+			$this->enums[$name] = $this->last_value++;
+			return true;
+			}
+
+	return false;
+}
+################################################################################
+#	__set().  Sets the value.
+################################################################################
+function __set( $name, $value=null )
+{
+	if( isset($this->enums[$name]) ){ return false; }
+		else if( !isset($this->enums[$name]) && !is_null($value) ){
+			$this->last_value = $value + 1;
+			$this->enums[$name] = $value;
+			return true;
+			}
+		else if( !isset($this->enums[$name]) && is_null($value) ){
+			$this->enums[$name] = $this->last_value++;
+			return true;
 			}
 
 	return false;
@@ -200,16 +233,16 @@ function __destruct()
 }
 
 }
-
+#
 #	Test code
 #
 #	$c = new enums();
-#	$c->RED_LIGHT(5);
-#	$c->YELLOW_LIGHT();
-#	$c->GREEN_LIGHT();
+#	$c->RED_LIGHT( 85 );
+#	$c->YELLOW_LIGHT = 23;
+#	$c->GREEN_LIGHT;
 #
-#	echo $c->RED_LIGHT() . "\n";
-#	echo $c->YELLOW_LIGHT() . "\n";
-#	echo $c->GREEN_LIGHT() . "\n";
+#	echo $c->RED_LIGHT . "\n";
+#	echo $c->YELLOW_LIGHT . "\n";
+#	echo $c->GREEN_LIGHT . "\n";
 
 ?>
