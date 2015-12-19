@@ -58,7 +58,7 @@ After it has been defined.
 
 6. __destruct().  The function used to shut the class down.
 
-7. __get().  PHP has this function for classes.  What it does is to all you to treat functions as variable names and it also allows you to not have to put the parenthesis at the end of the name.  Thus, in our example, this would be:
+7. __get().  PHP has this function for classes.  What it does is to allow you to treat functions as variable names and it also allows you to not have to put the parenthesis at the end of the name.  Thus, in our example, this would be:
 
 $c->RED_LIGHT;
 
@@ -111,6 +111,6 @@ one(1).
 
 Update 5/1/2015 :
 
-You now have four ways to both get and put the enums into the array.  To set an enum you have PUT, __call(), __get(), and __set().  To get an enum's value you have GET, __call(), __get(), and __set().  All of the work.  The PUT and GET functions are more elaborate but that's only because the others have a fixed way to be called and used.
+You now have four ways to both get and put the enums into the array.  To set an enum you have PUT, __call(), __get(), and __set().  To get an enum's value you have GET, __call(), __get(), and __set().  All of them work.  The PUT and GET functions are more elaborate but that's only because the others have a fixed way to be called and used.
 
 Have fun!
