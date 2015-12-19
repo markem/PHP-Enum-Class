@@ -88,7 +88,7 @@ This would cause the __call() function to be called (because there isn't an "a" 
    __call(<NAME>, <ARGUMENTS>);
 
 or
-   ___call( "a", 0 );
+   __call( "a", 0 );
 
 This, in turn, is interpreted as:
 
